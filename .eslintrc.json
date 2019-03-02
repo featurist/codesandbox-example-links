@@ -1,0 +1,12 @@
+{
+  "extends": "standard",
+  "rules": {
+    "object-curly-spacing": 0,
+    "mocha/no-exclusive-tests": "error"
+  },
+  "plugins": ["mocha"],
+  "env": {
+    "node": true,
+    "mocha": true
+  }
+}
