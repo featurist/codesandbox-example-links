@@ -3,7 +3,11 @@
 
 ## Description
 
-This cli tool inserts/updates a "Run this example" link underneath each _magically_ tagged code block in a markdown file (typically `README.md`).
+This cli tool inserts/updates a "Run this example" link next to each _magically_ tagged code block in a markdown file (typically `README.md`).
+
+## Demo
+
+[this](./spec/fixture.md) becomes [this](./spec/expected.md)
 
 ## Usage
 
