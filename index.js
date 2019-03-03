@@ -73,6 +73,7 @@ if (!module.parent) {
             type: 'boolean'
           },
           'base-path': {
+            describe: 'Base path to resolve relative paths specified in "project" properties',
             type: 'string'
           }
         })

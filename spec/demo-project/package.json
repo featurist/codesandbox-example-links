@@ -1,7 +1,7 @@
 {
   "name": "hyperdom-example",
   "version": "1.0.0",
-  "description": "Hyperdom Demo JS",
+  "description": "Hyperdom demo JS",
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",

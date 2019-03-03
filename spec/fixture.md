@@ -1,6 +1,6 @@
 ## An Example
 
-```jsx {"codeExample": {"project": "fixture-project", "file": "src/app.jsx"}}
+```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx"}}
 import * as hyperdom from "hyperdom";
 
 class App {

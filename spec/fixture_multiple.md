@@ -1,6 +1,6 @@
 ## An Example
 
-```jsx {"codeExample": {"project": "fixture-project", "file": "src/app.jsx"}}
+```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx"}}
 import * as hyperdom from "hyperdom";
 
 class App {
@@ -18,7 +18,7 @@ hyperdom.append(document.body, new App());
 
 This works with [babel-preset-hyperdom](https://github.com/featurist/babel-preset-hyperdom), see [JSX](#jsx) for more details.
 
-```jsx {"codeExample": {"project": "fixture-project", "file": "src/app.jsx"}}
+```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx"}}
 import * as hyperdom from "hyperdom";
 
 class App {
