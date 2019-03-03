@@ -17,7 +17,7 @@ Given the following project structure:
     └── package.json
 ```
 
-Where `README.md` looks like [this](./spec/fixture.md)
+Where `README.md` looks like [this](./spec/fixture.md), running
 
 ```sh
 npx codesandbox-example-links -i README.md
