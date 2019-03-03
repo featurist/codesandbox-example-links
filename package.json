@@ -2,6 +2,7 @@
   "name": "codesandbox-example-links",
   "version": "0.1.0",
   "description": "Generate \"run this example\" readme links (to Codesanbox)",
+  "bin": "index.js",
   "main": "index.js",
   "author": "artemave@gmail.com",
   "license": "MIT",
