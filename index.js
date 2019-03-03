@@ -3,6 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
+const debug = require('debug')('codesandbox-example-links')
 const {escape} = require('querystring')
 const {getParameters} = require('codesandbox/lib/api/define')
 
@@ -32,6 +33,7 @@ module.exports = (input, {basePath = '.'} = {}) => {
         )
         const newContent = result.currentExampleLines.join('\n')
         const files = getProjectFiles(templatePath, {newFile: result.currentNewFile, newContent})
+        debug(files)
         const parameters = getParameters({files})
 
         const url = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${parameters}&query=${escape(`module=${result.currentNewFile}`)}`
