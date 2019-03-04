@@ -56,4 +56,4 @@ const output = module.exports(input, {basePath: 'docs'})
 
 ### Debug
 
-At the time of this writing, codesandbox api is sort of short on validation errors. So if generated links don't work, you might find some additional debug info being helpful. Set `DEBUG=codesandbox-example-links` to get some.
+At the time of this writing, codesandbox api is sort of short on validation errors. So if generated links don't work, you might find some additional debug info useful. Set `DEBUG=codesandbox-example-links` to get some.
