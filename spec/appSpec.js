@@ -24,4 +24,11 @@ describe('generate links', function () {
     const actual = generateLinks(input, {basePath: 'spec'})
     assert.equal(actual, expected)
   })
+
+  it('inserts code sample into the existing file in the template project', function () {
+    const input = fs.readFileSync(`${__dirname}/fixture_layout.md`, {encoding: 'utf-8'})
+    const expected = fs.readFileSync(`${__dirname}/expected_layout.md`, {encoding: 'utf-8'})
+    const actual = generateLinks(input, {basePath: 'spec'})
+    assert.equal(actual, expected)
+  })
 })

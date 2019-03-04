@@ -35,6 +35,16 @@ Modified `README.md` looks like [this](./spec/expected.md)
 - repeat for all examples
 - `npx codesandbox-example-links -i README.md`
 
+### Magic comment format
+
+It's JSON:
+
+```
+```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx", "line": 5}}
+```
+
+`line` is optional. If specified, the contents of the code block are inserted into the contents of the `file` after that line number. Make sure `file` exists in the `project`.
+
 ### API
 
 ```javascript
@@ -47,7 +57,3 @@ const output = module.exports(input, {basePath: 'docs'})
 ### Debug
 
 At the time of this writing, codesandbox api is sort of short on validation errors. So if generated links don't work, you might find some additional debug info being helpful. Set `DEBUG=codesandbox-example-links` to get some.
-
-## TODO
-
-- replace only part of the file with the example

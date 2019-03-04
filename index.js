@@ -7,15 +7,31 @@ const debug = require('debug')('codesandbox-example-links')
 const {escape} = require('querystring')
 const {getParameters} = require('codesandbox/lib/api/define')
 
-function getProjectFiles (projectPath, {newFile, newContent}) {
+function getProjectFiles (projectPath) {
   const filePaths = glob.sync('**/*', {nodir: true, cwd: projectPath, dot: true})
   const files = filePaths.reduce((result, filePath) => {
     const content = fs.readFileSync(path.join(projectPath, filePath), {encoding: 'utf-8'})
     result[filePath] = {content}
     return result
   }, {})
-  files[newFile] = {content: newContent}
   return files
+}
+
+function exampleContent ({insertAfterLine, exampleFile, exampleLines, existingFile}) {
+  let content
+
+  if (insertAfterLine && existingFile) {
+    content = existingFile.content.split('\n').reduce((result, line, lineNumber) => {
+      if (lineNumber === insertAfterLine) {
+        result.push(...exampleLines)
+      }
+      result.push(line)
+      return result
+    }, []).join('\n')
+  } else {
+    content = exampleLines.join('\n')
+  }
+  return {content}
 }
 
 module.exports = (input, {basePath = '.'} = {}) => {
@@ -24,36 +40,41 @@ module.exports = (input, {basePath = '.'} = {}) => {
       result.lines.push(line)
     }
 
-    if (result.currentExampleLines) {
+    if (result.current) {
       if (line.match(/``` *$/)) {
         const templatePath = path.resolve(
           process.cwd(),
           basePath,
-          result.currentProject
+          result.current.project
         )
-        const newContent = result.currentExampleLines.join('\n')
-        const files = getProjectFiles(templatePath, {newFile: result.currentNewFile, newContent})
+        const files = getProjectFiles(templatePath)
+        files[result.current.exampleFile] = exampleContent(
+          Object.assign({existingFile: files[result.current.exampleFile]}, result.current)
+        )
+
         debug(files)
         const parameters = getParameters({files})
 
-        const url = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${parameters}&query=${escape(`module=${result.currentNewFile}`)}`
+        const url = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${parameters}&query=${escape(`module=${result.current.exampleFile}`)}`
         const link = `<a href="${url}" target="_blank" rel="noopener noreferrer">Run this example</a>`
         result.lines.push(link)
 
-        delete result.currentExampleLines
-        delete result.currentProject
+        delete result.current
       } else {
-        result.currentExampleLines.push(line)
+        result.current.exampleLines.push(line)
       }
     }
 
     const [, codeExampleConfig] = line.match(/```\w+ +(\{ ?"codeExample".*)/) || []
 
     if (codeExampleConfig) {
-      const {project, file} = JSON.parse(codeExampleConfig).codeExample
-      result.currentProject = project.replace(/^\//, '')
-      result.currentNewFile = file
-      result.currentExampleLines = []
+      const {project, file, line} = JSON.parse(codeExampleConfig).codeExample
+      result.current = {
+        project: project.replace(/^\//, ''),
+        exampleFile: file,
+        insertAfterLine: line,
+        exampleLines: []
+      }
     }
 
     return result
