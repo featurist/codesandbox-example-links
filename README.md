@@ -37,7 +37,7 @@ Modified `README.md` looks like [this](./spec/expected.md)
 
 ### Magic comment format
 
-It's JSON:
+It's a bit of JSON after language specified tag. E.g.:
 
 ```
 ```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx", "line": 5}}
