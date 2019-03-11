@@ -1,6 +1,6 @@
 {
   "name": "codesandbox-example-links",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Generate \"run this example\" readme links (to Codesanbox)",
   "bin": "index.js",
   "main": "index.js",
