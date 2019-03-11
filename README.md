@@ -59,7 +59,7 @@ Where:
 const generateLinks = require('codesandbox-example-links')
 
 const input = fs.readFileSync('readme.md', {encoding: 'utf-8'})
-const output = module.exports(input, {basePath: 'docs'})
+const output = generateLinks(input, {basePath: 'docs'})
 ```
 
 ### Debug
