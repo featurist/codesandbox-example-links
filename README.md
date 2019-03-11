@@ -37,13 +37,21 @@ Modified `README.md` looks like [this](./spec/expected.md)
 
 ### Magic comment format
 
-It's a bit of JSON after language specified tag. E.g.:
+It's a bit of JSON placed after ` ```lang`. E.g.:
 
 ```
-```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx", "line": 5}}
+```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx"}}
 ```
 
-`line` is optional. If specified, the contents of the code block are inserted into the contents of the `file` after that line number. Make sure `file` exists in the `project`.
+Where:
+
+`project`: path to the codesandbox project, relative to your project root. Required.
+
+`file`: file path that content of the codeblock will be put in (within `project`). Required.
+
+`line`: If specified, the contents of the code block are inserted into the contents of the `file` after that line number. Make sure `file` exists in the `project`. Optional.
+
+`addToNextExample`: instead of generating a link right after this codeblock, add it to the next magically tagged codeblock (that does not have that option set). Optional.
 
 ### API
 

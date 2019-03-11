@@ -1,9 +1,9 @@
 ## An Example
 
-```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx"}}
+```jsx {"codeExample": {"project": "demo-project", "file": "src/app.jsx"}}
 import * as hyperdom from "hyperdom";
 
-class App {
+export default class App {
   render() {
     return <div>
       <label>what's your name? </label>
@@ -12,16 +12,14 @@ class App {
     </div>;
   }
 }
-
-hyperdom.append(document.body, new App());
 ```
 
 This works with [babel-preset-hyperdom](https://github.com/featurist/babel-preset-hyperdom), see [JSX](#jsx) for more details.
 
-```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx"}}
+```jsx {"codeExample": {"project": "demo-project", "file": "src/app.jsx"}}
 import * as hyperdom from "hyperdom";
 
-class App {
+export default class App {
   render() {
     return <div>
       <label>what's YOUR name? </label>
@@ -30,8 +28,6 @@ class App {
     </div>;
   }
 }
-
-hyperdom.append(document.body, new App());
 ```
 
 This works with [babel-preset-hyperdom](https://github.com/featurist/babel-preset-hyperdom), see [JSX](#jsx) for more details.

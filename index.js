@@ -47,17 +47,26 @@ module.exports = (input, {basePath = '.'} = {}) => {
           basePath,
           result.current.project
         )
+
         const files = getProjectFiles(templatePath)
-        files[result.current.exampleFile] = exampleContent(
-          Object.assign({existingFile: files[result.current.exampleFile]}, result.current)
+        const exampleFileName = result.current.exampleFile
+        files[exampleFileName] = exampleContent(
+          Object.assign({existingFile: files[exampleFileName]}, result.current)
         )
 
-        debug(files)
-        const parameters = getParameters({files})
+        if (result.current.addToNextExample) {
+          result.toAddToNextLink[exampleFileName] = files[exampleFileName]
+          debug('To be added to the next link', result.toAddToNextLink)
+        } else {
+          Object.assign(files, result.toAddToNextLink)
+          debug('Generating link for files', files)
+          const parameters = getParameters({files})
 
-        const url = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${parameters}&query=${escape(`module=${result.current.exampleFile}`)}`
-        const link = `<a href="${url}" target="_blank" rel="noopener noreferrer">Run this example</a>`
-        result.lines.push(link)
+          const url = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${parameters}&query=${escape(`module=${result.current.exampleFile}`)}`
+          const link = `<a href="${url}" target="_blank" rel="noopener noreferrer">Run this example</a>`
+          result.lines.push(link)
+          result.toAddToNextLink = {}
+        }
 
         delete result.current
       } else {
@@ -68,17 +77,18 @@ module.exports = (input, {basePath = '.'} = {}) => {
     const [, codeExampleConfig] = line.match(/```\w+ +(\{ ?"codeExample".*)/) || []
 
     if (codeExampleConfig) {
-      const {project, file, line} = JSON.parse(codeExampleConfig).codeExample
+      const {project, file, line, addToNextExample} = JSON.parse(codeExampleConfig).codeExample
       result.current = {
         project: project.replace(/^\//, ''),
         exampleFile: file,
         insertAfterLine: line,
-        exampleLines: []
+        exampleLines: [],
+        addToNextExample
       }
     }
 
     return result
-  }, {lines: []})
+  }, {lines: [], toAddToNextLink: {}})
 
   return output.lines.join('\n')
 }

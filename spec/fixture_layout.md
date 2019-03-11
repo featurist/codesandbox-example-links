@@ -1,6 +1,6 @@
 ## An Example
 
-```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx", "line": 5}}
+```jsx {"codeExample": {"project": "demo-project", "file": "src/app.jsx", "line": 5}}
       <label>what's your name? </label>
       <input type="text" binding="this.name" />
       <div>hi {this.name}</div>
