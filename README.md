@@ -31,9 +31,11 @@ Modified `README.md` looks like [this](./spec/expected.md)
 
 - manually create sandbox for your example
 - download it into your project
-- paste the content of an example file in `README.md` with special reference to the downloaded project
+- cut and paste the example code from project files into the `README.md` with special reference to the downloaded project
 - repeat for all examples
 - `npx codesandbox-example-links -i README.md`
+
+[real world example](https://github.com/featurist/hyperdom/tree/master#quick-start)
 
 ### Magic comment format
 
