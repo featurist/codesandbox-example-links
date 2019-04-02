@@ -5,7 +5,7 @@
 
 Insert/update "Run this example" links next to each _magically_ tagged code block in a markdown file (typically `README.md`).
 
-Why? To keep readme examples in sync with the runnable examples.
+Why? To keep readme examples in sync with the runnable ones.
 
 ## Demo
 
