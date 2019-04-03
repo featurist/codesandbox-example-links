@@ -3,7 +3,9 @@
 
 ## Description
 
-Insert/update "Run this example" links next to each _magically_ tagged code block in a markdown file (typically `README.md`). A "Run this example" link, when clicked, creates a codesandbox project that contains the tagged code block mixed into some template project.  
+Insert/update "Run this example" links next to each _magically_ tagged code block in a markdown file (typically `README.md`). 
+
+A "Run this example" link, when clicked, creates a codesandbox project that contains the tagged code block mixed into some template project.  
 
 Why? To keep readme examples in sync with the runnable ones.
 
