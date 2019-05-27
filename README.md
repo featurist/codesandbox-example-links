@@ -39,8 +39,6 @@ Modified `README.md` looks like [this](./spec/expected.md)
 - repeat for all examples
 - `npx codesandbox-example-links -i README.md`
 
-[real world example](https://github.com/featurist/hyperdom/tree/master#quick-start)
-
 ### Magic comment format
 
 It's a bit of JSON placed after ` ```lang`. E.g.:
