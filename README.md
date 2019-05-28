@@ -1,7 +1,6 @@
 [Codesandbox](https://codesandbox.io) Example Links [![Codeship Status for featurist/codesandbox-example-links](https://app.codeship.com/projects/6176c9c0-20f5-0137-6e2c-62b911cd023e/status?branch=master)](https://app.codeship.com/projects/329497)
 -----------
 
-## Description
 
 This project helps to manage runnable examples for javascript projects.
 
