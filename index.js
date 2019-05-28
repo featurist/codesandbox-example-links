@@ -4,7 +4,6 @@ const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
 const debug = require('debug')('codesandbox-example-links')
-const {escape} = require('querystring')
 const {getParameters} = require('codesandbox/lib/api/define')
 
 function getProjectFiles (projectPath) {
@@ -17,114 +16,88 @@ function getProjectFiles (projectPath) {
   return files
 }
 
-function exampleContent ({insertAfterLine, exampleFile, exampleLines, existingFile}) {
-  let content
-
-  if (insertAfterLine && existingFile) {
-    content = existingFile.content.split('\n').reduce((result, line, lineNumber) => {
-      if (lineNumber === insertAfterLine) {
-        result.push(...exampleLines)
-      }
-      result.push(line)
-      return result
-    }, []).join('\n')
-  } else {
-    content = exampleLines.join('\n')
-  }
-  return {content}
-}
-
-module.exports = (input, {basePath = '.'} = {}) => {
+module.exports = (input, {iframe} = {}) => {
   const output = input.split('\n').reduce((result, line) => {
-    if (!line.match('https://codesandbox.io/api/v1/sandboxes/define')) {
-      result.lines.push(line)
-    }
+    const [isSnippetMatch, snippetLink] = line.match(/\[view code\]\((.*)\)/) || []
 
-    if (result.current) {
-      if (line.match(/``` *$/)) {
-        const templatePath = path.resolve(
-          process.cwd(),
-          basePath,
-          result.current.project
-        )
+    if (isSnippetMatch) {
+      const snippetPath = path.join(process.cwd(), snippetLink.replace(/#.*$/, ''))
+      const snippetContent = fs.readFileSync(snippetPath, {encoding: 'utf-8'}).split('\n')
 
-        const files = getProjectFiles(templatePath)
-        const exampleFileName = result.current.exampleFile
-        files[exampleFileName] = exampleContent(
-          Object.assign({existingFile: files[exampleFileName]}, result.current)
-        )
+      const clipLines = line.match(/#L(\d*)(-L(\d*))?/)
+      const clipStart = clipLines ? Number(clipLines[1]) - 1 : 0
+      const clipEnd = clipLines && clipLines[3] ? Number(clipLines[3]) : 0
 
-        if (result.current.addToNextExample) {
-          result.toAddToNextLink[exampleFileName] = files[exampleFileName]
-          debug('To be added to the next link', result.toAddToNextLink)
-        } else {
-          Object.assign(files, result.toAddToNextLink)
-          debug('Generating link for files', files)
-          const parameters = getParameters({files})
+      const fileExt = path.parse(snippetPath).ext
+      const lang = fileExt.slice(1)
+      result.push('```' + lang)
 
-          const url = `https://codesandbox.io/api/v1/sandboxes/define?parameters=${parameters}&query=${escape(`module=${result.current.exampleFile}`)}`
-          const link = `<a href="${url}" target="_blank" rel="noopener noreferrer">Run this example</a>`
-          result.lines.push(link)
-          result.toAddToNextLink = {}
-        }
-
-        delete result.current
+      if (clipEnd) {
+        result.push(...snippetContent.slice(clipStart, clipEnd))
       } else {
-        result.current.exampleLines.push(line)
+        result.push(...snippetContent.slice(clipStart))
       }
+
+      if (result[result.length - 1] === '') {
+        result.splice(-1)
+      }
+
+      result.push('```')
     }
 
-    const [, codeExampleConfig] = line.match(/```\w+ +(\{ ?"codeExample".*)/) || []
+    const [isSanbdboxMatch, sandboxLink] = line.match(/\[codesandbox\]\((.*)\)/) || []
 
-    if (codeExampleConfig) {
-      const {project, file, line, addToNextExample} = JSON.parse(codeExampleConfig).codeExample
-      result.current = {
-        project: project.replace(/^\//, ''),
-        exampleFile: file,
-        insertAfterLine: line,
-        exampleLines: [],
-        addToNextExample
-      }
+    if (isSanbdboxMatch) {
+      const sandboxProjectPath = path.join(
+        process.cwd(),
+        sandboxLink
+      )
+      const files = getProjectFiles(sandboxProjectPath)
+      debug('Generating link for files', files)
+      const parameters = getParameters({files})
+
+      const url = `https://codesandbox.io/api/v1/sandboxes/define?${iframe ? 'embed=1&' : ''}parameters=${parameters}`
+      const link = iframe
+        ? `<iframe src="${url}" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>`
+        : `<a href="${url}" target="_blank" rel="noopener noreferrer">Run this example</a>`
+
+      result.push(link)
+    }
+
+    if (!isSanbdboxMatch && !isSnippetMatch) {
+      result.push(line)
     }
 
     return result
-  }, {lines: [], toAddToNextLink: {}})
+  }, [])
 
-  return output.lines.join('\n')
+  return output.join('\n')
 }
 
 if (!module.parent) {
   const argv = require('yargs')
-    .command('$0 <file>', 'Generate codesanbox links for code examples', yargs => {
+    .command('$0 [files..]', 'Generate codesanbox links/iframes and code snippets for documentation markdown', yargs => {
       yargs
         .options({
-          'in-place': {
-            alias: 'i',
-            describe: 'Modify file in place',
+          'iframe': {
+            describe: 'iframes instead of links',
             type: 'boolean'
           },
-          'base-path': {
-            describe: 'Base path to resolve relative paths specified in "project" properties',
-            type: 'string'
+          'output-dir': {
+            describe: 'output directory',
+            type: 'string',
+            required: true
           }
         })
     }).argv
 
-  const inputFilePath = path.resolve(process.cwd(), argv.file)
-  const input = fs.readFileSync(inputFilePath, {encoding: 'utf-8'})
-  const output = module.exports(input, {basePath: argv.basePath})
+  argv.files.forEach(file => {
+    const inputFilePath = path.resolve(process.cwd(), file)
+    const inputFileName = path.parse(file).base
 
-  if (argv.inPlace) {
-    fs.promises.truncate(inputFilePath, 0).then(() => {
-      return fs.writeFileSync(
-        inputFilePath,
-        output
-      )
-    }).catch(e => {
-      console.error(e)
-      process.exit(1)
-    })
-  } else {
-    console.log(output)
-  }
+    const input = fs.readFileSync(inputFilePath, {encoding: 'utf-8'})
+    const output = module.exports(input, argv)
+
+    fs.writeFileSync(path.join(process.cwd(), argv.outputDir, inputFileName), output)
+  })
 }

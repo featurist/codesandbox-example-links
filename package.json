@@ -1,15 +1,24 @@
 {
   "name": "codesandbox-example-links",
-  "version": "0.3.0",
-  "description": "Generate \"run this example\" readme links (to Codesanbox)",
+  "version": "1.0.0",
+  "description": "Insert runnable code example links/iframes to READMEs",
   "bin": "index.js",
   "main": "index.js",
   "author": "artemave@gmail.com",
   "license": "MIT",
   "private": false,
+  "keywords": ["codesandbox", "runnable", "example", "documentation", "readme"],
   "scripts": {
     "test": "mocha spec"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/featurist/codesandbox-example-links.git"
+  },
+  "bugs": {
+    "url": "https://github.com/featurist/codesandbox-example-links/issues"
+  },
+  "homepage": "https://github.com/featurist/codesandbox-example-links",
   "devDependencies": {
     "eslint": "^5.14.1",
     "eslint-config-standard": "^12.0.0",

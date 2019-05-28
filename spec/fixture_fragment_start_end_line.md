@@ -1,7 +1,5 @@
 ## An Example
 
-[view code](/spec/demo-project/src/app.jsx)
-
-[codesandbox](/spec/demo-project)
+[view code](/spec/demo-project/src/app.jsx#L4-L10)
 
 This works with [babel-preset-hyperdom](https://github.com/featurist/babel-preset-hyperdom), see [JSX](#jsx) for more details.

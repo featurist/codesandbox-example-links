@@ -3,69 +3,93 @@
 
 ## Description
 
-Insert/update "Run this example" links next to each _magically_ tagged code block in a markdown file (typically `README.md`). 
+This project helps to manage runnable examples for javascript projects.
 
-A "Run this example" link, when clicked, creates a codesandbox project that contains the tagged code block mixed into some template project.  
+It covers both cases of project README on github and external docs website.
 
-Why? To keep readme examples in sync with the runnable ones.
+#### How it works
 
-## Demo
+There is a CLI/API to replace magic placeholders in a markdown files with one of the following:
+
+- `iframe` with a codesandbox project
+- "Run this example" link to a codesandbox project
+- code snippet extracted from a file on a file system
+
+## Example
 
 Given the following project structure:
 
 ```
 .
-├── README.md
-└── demo-project
-    ├── index.html
-    └── package.json
+├── demo-project
+│   ├── index.html
+│   ├── package.json
+│   └── src
+│       ├── app.jsx
+│       └── index.js
+├── docs
+│   └── README.md
 ```
 
-Where `README.md` looks like [this](./spec/fixture.md), running
+Where `docs/README.md` looks like this:
+
+```markdown
+## An Example
+
+[view code](/demo-project/src/index.js)
+
+[codesanbox](/demo-project)
+
+```
 
 ```sh
-npx codesandbox-example-links -i README.md
+npx codesandbox-example-links --output-dir=. ./docs/README.md
 ```
 
-Adds a link to generate codesanbox based on the `./demo-project` contents and the code block from the `README.md`.
+Will produce a README.md in the root of the project with the following contents:
 
-Modified `README.md` looks like [this](./spec/expected.md)
+
+    ## An Example
+
+    ```js
+    import * as hyperdom from "hyperdom";
+    import App from "./app";
+
+    hyperdom.append(document.body, new App());
+
+    ```
+
+    <a href="https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKAdAIwIZplATgYyVHwHsA7AFxkqRGAB0yACJ-kAB13hgrjcSYBtRixZtqANzYAaEaLYALAJ7sYuACYkAtmzkBdRgF8Qh6SAhl1MAB4oFFLVCIhSlahVoAeAIQARAPIAwgAqAJoACgCiTPaOAHyMnrFQCWSJCjAY6qn0FJ4UEBSwceEYBDhMAMoYlmgk1p4A9AVFMDl5WjwYTPgKZXA8ALxsAKrBAGIAtAAcbEyNqU0ZWTlknnXqSu2e6hASTBDqwyAY7OxscU27Equ5nnD4uBDsFExwBMfv-I0WVrYAVnwQNtGg8ni9Fo0NltGIlGslUiYzOwMPgANYYADmMBQgPIzlcVBoiDocjYZAwnX4rBAylUGm0kxslPYsBkZJAEjUcAg5GpbAAjCgAAwi9nMGlWMHPAp8pA0gASKjUmi0TCsWhITAAUpVxWIQFoMBZ-eZLDY7A4oPqadKXkCBAwJQa4BQyhRTSjylADubbMkmJNJiRVGkQLJnTS0ABXaDqT1lfAVGNx31_S2OXQS0wcqyhqxkfAQeDUp2iKNYHCTTjcCiTOkq7SmoUAFjF4bkBobDJ08rYUAwVFdWZYOYlbCsEl8MHz1CLJflZfkHETVZjllguFNA6HHpAcjHBrRMCUAHcSBoHUIDGRDIwkSAvo1TuxcXBrATyESPCSIFp2BerwAFRMBgcAxMqPZMGAuDaDS3aqmwADcsJkDYAG4K8VhgBg0ZQK8-ADnA4EAIJnEwS5cOauAABQAJQUZ2TBcBQ0a4MwOx7Kk5YsJ4A7YCkp59BQADk4FKCQbFMBSnQAPxME0_E4NxPGeBY7DRq8FDKscVDWHuTBoL8FiYrpCgQHAKAyTAcwLExvHXHE5kURQ5mWdZhhXFxTFeTcKHZkY96mI-BA_H6b6fm4xLmP-gFMCBYEQfSqrQbBaqKJBiEgP5f4Ya8ZHsKlcFsCgz5nMhqEIdoKAvtQ6g0Zo-DRp0lDoCQmzSNJMCnkwBX0XR_kmIYhhAA" target="_blank" rel="noopener noreferrer">Run this example</a>
 
 ## Usage
 
 - manually create sandbox for your example
 - download it into your project
-- cut and paste the example code from project files into the `README.md` with special reference to the downloaded project
+- insert magic links in markdown files
 - repeat for all examples
-- `npx codesandbox-example-links -i README.md`
+- `npx codesandbox-example-links --output-dir=./dist docs/*.md`
 
-### Magic comment format
+The above command renders links. Add `--iframe` option to generate iframes instead.
 
-It's a bit of JSON placed after ` ```lang`. E.g.:
+### Magic links
 
-```
-```jsx {"codeExample": {"project": "demo-project", "file": "src/index.jsx"}}
-```
+`[codesanbox](/demo-project)` - turns into either link or an iframe, depending on `--iframe` option
 
-Where:
+`[view code](/path/to/file.js)` - turns into a code snippet containing file.js
 
-`project`: path to the codesandbox project, relative to your project root. Required.
+`[view code](/path/to/file.jsL#3)` - turns into a code snippet containing a fragment of file.js starting at line 3 onwards
 
-`file`: file path that content of the codeblock will be put in (within `project`). Required.
-
-`line`: If specified, the contents of the code block are inserted into the contents of the `file` after that line number. Make sure `file` exists in the `project`. Optional.
-
-`addToNextExample`: instead of generating a link right after this codeblock, add it to the next magically tagged codeblock (that does not have that option set). Optional.
+`[view code](/path/to/file.jsL#3-L10)` - turns into a code snippet containing a fragment of file.js, lines 3 to 10
 
 ### API
 
-```javascript
+```js
 const generateLinks = require('codesandbox-example-links')
 
 const input = fs.readFileSync('readme.md', {encoding: 'utf-8'})
-const output = generateLinks(input, {basePath: 'docs'})
+const output = generateLinks(input, {iframe: true})
 ```
 
 ### Debug
 
-At the time of this writing, codesandbox api is sort of short on validation errors. So if generated links don't work, you might find some additional debug info useful. Set `DEBUG=codesandbox-example-links` to get some.
+As of this writing, codesandbox api is sort of short on validation errors. So if generated links don't work, you might find some additional debug info useful. Set `DEBUG=codesandbox-example-links` to get some.
