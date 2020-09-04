@@ -76,7 +76,7 @@ module.exports = (input, {iframe} = {}) => {
 
 if (!module.parent) {
   const argv = require('yargs')
-    .command('$0 [files..]', 'Generate codesanbox links/iframes and code snippets for documentation markdown', yargs => {
+    .command('$0 [files..]', 'Generate CodeSandbox links/iframes and code snippets for documentation Markdown', yargs => {
       yargs
         .options({
           'iframe': {

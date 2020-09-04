@@ -30,7 +30,7 @@ Where `docs/README.md` looks like this:
 
 [view code](/demo-project/src/index.js)
 
-[codesanbox](/demo-project)
+[codesandbox](/demo-project)
 
 ```
 
@@ -70,7 +70,7 @@ The above command renders links. Add `--iframe` option to generate iframes inste
 
 ### Magic links
 
-`[codesanbox](/demo-project)` - turns into either link or an iframe, depending on `--iframe` option
+`[codesandbox](/demo-project)` - turns into either link or an iframe, depending on `--iframe` option
 
 `[view code](/path/to/file.js)` - turns into a code snippet containing file.js
 
