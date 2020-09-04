@@ -1,14 +1,7 @@
 [Codesandbox](https://codesandbox.io) Example Links [![Codeship Status for featurist/codesandbox-example-links](https://app.codeship.com/projects/6176c9c0-20f5-0137-6e2c-62b911cd023e/status?branch=master)](https://app.codeship.com/projects/329497)
 -----------
 
-
-This project helps to manage runnable examples for javascript projects.
-
-It covers both cases of project README on github and external docs website.
-
-#### How it works
-
-There is a CLI/API to replace magic placeholders in a markdown files with one of the following:
+A CLI/API to replace magic placeholders in a markdown files with:
 
 - `iframe` with a codesandbox project
 - "Run this example" link to a codesandbox project
@@ -41,12 +34,13 @@ Where `docs/README.md` looks like this:
 
 ```
 
+Then running:
+
 ```sh
 npx codesandbox-example-links --output-dir=. ./docs/README.md
 ```
 
-Will produce a README.md in the root of the project with the following contents:
-
+Will produce a `./README.md` with the following contents:
 
     ## An Example
 
