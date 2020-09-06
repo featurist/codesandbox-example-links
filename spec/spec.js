@@ -26,4 +26,10 @@ describe('generate links', function () {
     const actual = generateLinks(input)
     assertSnapshot('fragment_start_end_line.md', actual)
   })
+
+  it('generates a link with codesandbox "embed" options appended', function () {
+    const input = fs.readFileSync(`${__dirname}/fixture_with_embed_options.md`, {encoding: 'utf-8'})
+    const actual = generateLinks(input)
+    assertSnapshot('embed_options.md', actual)
+  })
 })

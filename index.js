@@ -45,7 +45,7 @@ module.exports = (input, {iframe} = {}) => {
       result.push('```')
     }
 
-    const [isSanbdboxMatch, sandboxLink] = line.match(/\[codesandbox\]\((.*)\)/) || []
+    const [isSanbdboxMatch, sandboxLink, embedOptions] = line.match(/\[codesandbox\]\(([^?]+)(?:\?(.+))?\)/) || []
 
     if (isSanbdboxMatch) {
       const sandboxProjectPath = path.join(
@@ -55,8 +55,15 @@ module.exports = (input, {iframe} = {}) => {
       const files = getProjectFiles(sandboxProjectPath)
       debug('Generating link for files', files)
       const parameters = getParameters({files})
+      const urlParams = [`parameters=${parameters}`]
+      if (iframe) {
+        urlParams.push('embed=1')
+      }
+      if (embedOptions) {
+        urlParams.push(`query=${encodeURIComponent(embedOptions)}`)
+      }
 
-      const url = `https://codesandbox.io/api/v1/sandboxes/define?${iframe ? 'embed=1&' : ''}parameters=${parameters}`
+      const url = `https://codesandbox.io/api/v1/sandboxes/define?${urlParams.join('&')}`
       const link = iframe
         ? `<iframe src="${url}" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>`
         : `<a href="${url}" target="_blank" rel="noopener noreferrer">Run this example</a>`

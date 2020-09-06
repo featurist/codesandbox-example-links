@@ -11,7 +11,7 @@ module.exports = function assertSnapshot (name, actual) {
 
   try {
     const expected = fs.readFileSync(`${snapshotsPath}/${base}_expected${ext}`, {encoding: 'utf-8'})
-    assert.equal(expected, actual)
+    assert.equal(actual, expected)
   } catch (e) {
     console.info(`Generated actual: ${actualPath}`)
     throw e
