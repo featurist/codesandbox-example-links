@@ -70,13 +70,15 @@ The above command renders links. Add `--iframe` option to generate iframes inste
 
 ### Magic links
 
-`[codesanbox](/demo-project)` - turns into either link or an iframe, depending on `--iframe` option
+`[codesanbox](/demo-project)` - turns into either link or an iframe, depending on `--iframe` option.
 
-`[view code](/path/to/file.js)` - turns into a code snippet containing file.js
+`[codesanbox](/demo-project?module=/path/to/file)` - as above, but opens the project on a specific file. Other [codesanbdox embed options](https://codesandbox.io/docs/embedding#embed-options) can be specified too.
 
-`[view code](/path/to/file.jsL#3)` - turns into a code snippet containing a fragment of file.js starting at line 3 onwards
+`[view code](/path/to/file.js)` - turns into a code snippet containing file.js.
 
-`[view code](/path/to/file.jsL#3-L10)` - turns into a code snippet containing a fragment of file.js, lines 3 to 10
+`[view code](/path/to/file.jsL#3)` - turns into a code snippet containing a fragment of file.js starting at line 3 onwards.
+
+`[view code](/path/to/file.jsL#3-L10)` - turns into a code snippet containing a fragment of file.js, lines 3 to 10.
 
 ### API
 
