@@ -1,6 +1,6 @@
 {
   "name": "codesandbox-example-links",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Insert runnable code example links/iframes to READMEs",
   "bin": "index.js",
   "main": "index.js",
