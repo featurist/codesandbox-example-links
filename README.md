@@ -10,7 +10,6 @@ A CLI/API to replace magic placeholders in a markdown files with:
 ## Example
 
 Given the following project structure:
-
 ```
 .
 ├── demo-project
@@ -30,7 +29,7 @@ Where `docs/README.md` looks like this:
 
 [view code](/demo-project/src/index.js)
 
-[codesanbox](/demo-project)
+[codesandbox](/demo-project)
 
 ```
 
@@ -70,9 +69,9 @@ The above command renders links. Add `--iframe` option to generate iframes inste
 
 ### Magic links
 
-`[codesanbox](/demo-project)` - turns into either link or an iframe, depending on `--iframe` option.
+`[codesandbox](/demo-project)` - turns into either link or an iframe, depending on `--iframe` option.
 
-`[codesanbox](/demo-project?module=/path/to/file)` - as above, but opens the project on a specific file. Other [codesanbdox embed options](https://codesandbox.io/docs/embedding#embed-options) can be specified too.
+`[codesandbox](/demo-project?module=/path/to/file)` - as above, but opens the project on a specific file. Other [codesanbdox embed options](https://codesandbox.io/docs/embedding#embed-options) can be specified too.
 
 `[view code](/path/to/file.js)` - turns into a code snippet containing file.js.
 
